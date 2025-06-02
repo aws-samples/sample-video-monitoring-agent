@@ -94,7 +94,7 @@ Thre 4 lines below do the following:
 
 
 ```bash
-$ git clone git@ssh.gitlab.aws.dev:kvs-agent/kvs-monitoring-agent.git && cd kvs-monitoring-agent
+$ git clone https://github.com/aws-samples/sample-video-monitoring-agent.git && cd sample-video-monitoring-agent
 $ python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
 $ cdk bootstrap && cdk deploy
 $ cd src/streamlit_app && streamlit run app.py
