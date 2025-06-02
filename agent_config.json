@@ -1,0 +1,29 @@
+{
+  "logging": {
+    "lambda_log_level": "INFO",
+    "streamlit_log_level": "INFO"
+  },
+  "paths": {
+    "assets_folder_name": "assets",
+    "lambdas_source_folder": "src/lambdas",
+    "athena_data_destination_prefix": "data_query_data_source",
+    "athena_table_data_prefix": "known_vehicles",
+    "knowledgebase_destination_prefix": "knowledgebase_data_source",
+    "knowledgebase_file_name": "",
+    "agent_schema_destination_prefix": "agent_api_schema"
+  },
+  "names": {
+    "stack_name": "chatbot-stack",
+    "bedrock_agent_name": "ChatbotBedrockAgent",
+    "bedrock_agent_alias": "Chatbot_Agent",
+    "streamlit_lambda_function_name": "invokeAgentLambda"
+  },
+  "bedrock_instructions": {
+    "agent_instruction": "You are monitoring images from a live video stream of the front door of a house. Your job is to analyze images from the stream and then log and alert as necessary. All events should be logged, and anything with alert level of 1 or higher should be alerted. You can recall any past events caught on video in high detail and discuss them with the user. You only answer question about past events from video monitoring feeds, and will use your tools and resources to look for answers in past events. You respond with concise, well-formatted professional written report regarding events.",
+    "knowledgebase_instruction": "Use this when asked for events and no specific time frame is provided, or when questions about 'all time' or 'ever'. If a specific time Range is referenced in the user query do not use this.",
+    "action_group_description": "This is an action group for analyzing images, logging, alerting and to search over specific date ranges."
+  },
+  "models": {
+    "bedrock_agent_foundation_model": "anthropic.claude-3-sonnet-20240229-v1:0"
+  }
+}

@@ -1,0 +1,12 @@
+aws-cdk-lib>=2.179.0
+constructs>=10.4.2
+cdk-nag>=2.35.23
+opencv-python==4.10.0.84
+boto3>=1.35.83
+mypy-boto3-s3>=1.35.93
+mypy-boto3-lambda>=1.36.22
+streamlit>=1.42.1
+streamlit_chat>=0.1.1
+PyYAML>=6.0.2
+cdklabs-generative-ai-cdk-constructs>=0.1.295
+aws_lambda_powertools>=3.7.0

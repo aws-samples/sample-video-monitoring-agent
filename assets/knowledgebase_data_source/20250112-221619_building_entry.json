@@ -1,0 +1,8 @@
+{
+    "logId": "evt_moevfv",
+    "alert_level": 0,
+    "log_file_name": "20250112-221619_building_entry.json",
+    "reason": "Individual entering building during business hours",
+    "brief_description": "Person entering main entrance",
+    "full_description": "Security footage shows individual entering building through main entrance during normal business hours. Subject walked directly to entrance with normal gait and confident demeanor. Subject description: - Gender: Male - Height: Approximately 5'9\" - Build: Average - Clothing: Navy blue blazer, white dress shirt, khaki pants - Footwear: Red and white athletic shoes - Face: Clearly visible, brown curly hair - Behavior: Normal walking pace, maintained direct path to entrance - Duration: Entered frame at 14:20, reached door at 14:21 - Movement pattern: Approached from parking lot, used main walkway - Note: No suspicious behavior observed, followed standard entry pattern"
+  }
