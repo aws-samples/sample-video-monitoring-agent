@@ -1,0 +1,8 @@
+{
+    "logId": "ghi",
+    "alert_level": 1,
+    "log_file_name": "20250115-172628_suspicious_behavior.json",
+    "reason": "Unknown vehicle lingering in driveway after hours",
+    "brief_description": "Dark sedan parked in driveway for extended period without occupant exiting",
+    "full_description": "Security footage shows an unfamiliar dark sedan entering driveway at 23:45. Vehicle remained stationary with lights off for approximately 8 minutes before departing. No occupants exited the vehicle. Late hour and behavior pattern warrant noting though no immediate threat observed. Vehicle description: - Make/Model: Sedan, possibly Toyota Camry - Color: Dark, appears black or dark blue - Year: Estimated 2015-2020 - Plates: Partially visible, appears to start with XRJ - Distinguishing features: Small dent on rear passenger door, aftermarket wheels - Occupants: At least one, remained in vehicle - Additional notes: Vehicle's windows appeared tinted, making interior observation difficult"
+}

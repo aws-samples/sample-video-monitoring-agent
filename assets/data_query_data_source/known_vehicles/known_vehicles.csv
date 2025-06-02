@@ -1,0 +1,11 @@
+vehicle_id,make,year,color,license_plate,access_level,visitor_type,description
+VEH_1001,Tesla,2020,Black,ABC-123,A1,EXECUTIVE,"CEO personal vehicle. Full access to all areas. Regular visits during business hours and occasional evening access for board meetings."
+VEH_1002,Ford,2005,White,XYZ-789,B2,MAINTENANCE,"Facilities maintenance van. Scheduled access Mon-Fri 7AM-4PM. Check if outside these hours."
+VEH_1003,Toyota,2019,Silver,DEF-456,A2,EXECUTIVE,"CFO personal vehicle. Full access to main building and parking structure. Typically arrives 7AM-7PM."
+VEH_1004,Mercedes,2017,White,GHI-789,C1,DELIVERY,"Daily mail and package delivery van. Restricted to loading dock area. Expected between 10AM-2PM only."
+VEH_1005,BMW,2001,Blue,JKL-012,B1,STAFF,"Head of Security vehicle. 24/7 access permitted. Regular patrols expected."
+VEH_1006,Honda,2018,Red,MNO-345,C2,CONTRACTOR,"IT support contractor. Limited access to technical areas. Must check in at security desk."
+VEH_1007,Ram,2012,White,PQR-678,C1,DELIVERY,"Catering service vehicle. Kitchen access only. Regular delivery window 6AM-10AM."
+VEH_1008,Chevrolet,2000,Black,STU-901,A2,EXECUTIVE,"CTO personal vehicle. Full access to R&D wing and main building. Regular hours 9AM-6PM."
+VEH_1009,Toyota,2023,Gray,VWX-234,B2,MAINTENANCE,"Landscaping service truck. Grounds access only. Expected Thursdays 8AM-4PM."
+VEH_1010,Ford,2025,White,YZA-567,C2,CONTRACTOR,"HVAC service vehicle. Mechanical room access only. Must be escorted if after hours."

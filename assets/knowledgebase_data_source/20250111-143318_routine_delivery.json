@@ -1,0 +1,8 @@
+{
+    "logId": "def",
+    "alert_level": 0,
+    "log_file_name": "20250111-143318_routine_delivery.json",
+    "reason": "Authorized delivery personnel completing normal delivery",
+    "brief_description": "USPS mail carrier delivering mail and packages during regular route",
+    "full_description": "Security camera shows routine mail delivery by uniformed USPS carrier. Carrier approaches with mail bag, places mail in mailbox, and delivers two small packages to doorstep following standard protocol. Subject is wearing full USPS uniform with visible ID badge. Actions are methodical and professional, consistent with authorized delivery procedures. Subject description: - Gender: Female - Height: 5'4\" - Build: Small - Clothing: USPS uniform with patches - Footwear: Black postal service shoes - Accessories: Official USPS ID badge, mail bag - Distinguishing features: None significant - Vehicle: Marked USPS delivery truck parked at curb"
+}
