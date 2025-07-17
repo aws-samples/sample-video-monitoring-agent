@@ -1,5 +1,7 @@
 FROM public.ecr.aws/lambda/python:3.11@sha256:58834a0d4d7f86326b6c91d516c66fbe8e91ccd3646ceba4025a66a7a8906e81
-RUN yum update --security -y && yum clean all
+RUN yum update --security -y && \
+    yum install -y gcc gcc-c++ && \
+    yum clean all
 
 # Set up Lambda environment
 ENV LAMBDA_TASK_ROOT=/var/task
