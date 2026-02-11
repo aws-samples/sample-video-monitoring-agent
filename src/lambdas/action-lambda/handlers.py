@@ -33,7 +33,7 @@ def process_image_analysis(parameters: List[Dict[str, Any]]) -> Dict[str, str]:
             response["Body"].read(), response["ContentType"], monitoring_instructions
         )
         logger.info(
-            f"Detected event  type: {type(detected_event_data)}, data: {detected_event_data}"
+            f"Detected event type: {type(detected_event_data)}, length: {len(str(detected_event_data))}"
         )
         return {"source": file_name, "answer": detected_event_data}
     except Exception as e:
@@ -77,7 +77,7 @@ def process_alert(parameters: List[Dict[str, Any]]) -> Dict[str, str]:
 
 def process_log(parameters: List[Dict[str, Any]]) -> Dict[str, str]:
     """Handle event logging to S3"""
-    logger.info(f"Processing log event: {parameters}")
+    logger.info(f"Processing log event with {len(parameters)} parameters")
     detected_event_data = get_named_parameter(parameters, "detected_event_data")
     event_data = json.loads(detected_event_data)
 
