@@ -65,7 +65,6 @@ class VideoStreamSource:
         self._producer.start()
 
     def stop(self):
-        logger.info(f"** Motion end ** buffer size: {len(self._frame_buffer)}")
         if not self._running.value:
             return
         self._running.value = False

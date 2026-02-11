@@ -136,3 +136,5 @@ cython_debug/
 /kvs_frame_splitter/app/.idea/
 /kvs_frame_splitter/app/docker/frame-splitter-0.1-SNAPSHOT-shaded.jar
 /cdk.context.json
+test_grid_output.jpg
+test_pipeline.py

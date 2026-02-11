@@ -189,3 +189,4 @@ def process_date_search(parameters: List[Dict[str, Any]]) -> Dict[str, str]:
 
     except Exception as e:
         logger.error(f"Error processing date searach request: {e}")
+        raise

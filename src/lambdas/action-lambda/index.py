@@ -44,7 +44,7 @@ def handle_analyze_grid(
     monitoring_instructions: Annotated[
         str,
         Query(
-            description="Additional monitoring instructions provided with the request. If none avilalbe, provide 'None'."
+            description="Additional monitoring instructions provided with the request. If none available, provide 'None'."
         ),
     ],
 ) -> dict:

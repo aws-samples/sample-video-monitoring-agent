@@ -39,5 +39,5 @@ def image_to_text(image: bytes, content_type: str, monitoring_instructions) -> s
     logger.info(f"Image prompt: {text}")
     # invoking Claude3, passing in our prompt
     return invoke_bedrock_model(
-        prompt=prompt, model_id="anthropic.claude-3-5-sonnet-20240620-v1:0"
+        prompt=prompt, model_id="anthropic.claude-3-5-sonnet-20241022-v2:0"
     )

@@ -36,7 +36,7 @@ ANALYZE_GRID_SYSTEM_PROMPT = """
     {"alert_level":1,
     "reason": "Refrigerator door left open unattended",
     "log_file_name": "<timestamp of format YYYYMMDD-HHMMSS provided in query>_refrigerator_door_open.json", # Timestamp followed by descriptive but brief filename 
-    "description": <A summary of the key event>,
+    "brief_description": <A summary of the key event>,
     "full_description": <A full detailed report of the event as a json dumped string. Focus on the events that are happening and provide detailed but concise description of any people, cars or items that appear and are not part of the static background. Write in the style of a formal event status report. At the end of a report provide a summary for each subject with an itemized breakdown of clothing and appearance that can be used for reference, such as shoe color, or visible tattoos. Finally verify each detail against each frame for accuracy and adjust if necessary. Do not make any recommendations for actions, just provide the report. Do not include any linebreak characters whatsover, just plain text as values without special characters. Do not use any double or quotes - say feet and inches instead. Only use json friendly characters.>}
     
     """
