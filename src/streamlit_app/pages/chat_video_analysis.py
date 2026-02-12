@@ -32,35 +32,26 @@ S3_PREFIX = Connections.s3_prefix
 _icons = os.path.join(os.path.dirname(__file__), "..", "..", "..", "assets", "icons")
 
 
-@st.fragment
+@st.fragment(run_every=5)
 def video_stream_section():
     config: Config = st.session_state[CONFIG]
     if not config.stream_url:
         st.info("No video stream provided - chat only mode activated")
         return
 
-    # Create a permanent container for the video
-    if "video_container" not in st.session_state:
-        st.session_state.video_container = st.empty()
-
     if "video_initialized" not in st.session_state:
         logger.info("First time initializing video")
 
-        # Display video in the permanent container
-        with st.session_state.video_container:
-            if config.stream_url == "0":
-                config.stream_url = 0
-                st.camera_input("Camera capture")
-            else:
-                # Display video
-                st.video(config.stream_url, autoplay=True)
-
-        # Create status containers
-        st.session_state.status_container = st.empty()
-        st.session_state.events_container = st.container()
+        # Display video
+        if config.stream_url == "0":
+            config.stream_url = 0
+            st.camera_input("Camera capture")
+        else:
+            st.video(config.stream_url, autoplay=True)
 
         # Initialize processing components
         ctx = multiprocessing.get_context("spawn")
+        event_queue = ctx.Queue()
         source = VideoStreamSource(ctx, config.stream_url, queue_size=250)
         chain = FrameProcessorChain(
             [
@@ -82,6 +73,7 @@ def video_stream_section():
                 LambdaProcessor(
                     response_handler=ResponseHandler(Connections.lambda_function_name, Connections.lambda_client_provider),
                     monitoring_instructions=config.monitoring_instructions,
+                    event_queue=event_queue,
                 ),
             ]
         )
@@ -90,6 +82,8 @@ def video_stream_section():
         st.session_state.source = source
         st.session_state.processor = processor
         st.session_state.sink = sink
+        st.session_state.event_queue = event_queue
+        st.session_state.dispatched_events = []
 
         # Define the processing function
         def process_video():
@@ -129,31 +123,47 @@ def video_stream_section():
         import threading
 
         processing_thread = threading.Thread(target=process_video, daemon=True)
-        # button to change source.running to false
         st.button("Stop", on_click=lambda: source.stop())
         processing_thread.start()
 
         st.session_state.video_initialized = True
         st.session_state.processing_complete = False
     else:
-        # Rerender the video in the same container on page refreshes
-        with st.session_state.video_container:
-            if config.stream_url == 0:
-                st.camera_input("Camera capture")
-            else:
-                # Display video
-                st.video(config.stream_url, autoplay=True)
-
-    # Status updates (in main thread)
-    with st.session_state.status_container:
-        if not st.session_state.get("processing_complete", False):
-            st.info(
-                f"Processing video stream... Frame: {st.session_state.get('current_frame', 0)}"
-            )
-            if error := st.session_state.get("processing_error"):
-                st.error(f"Processing error: {error}")
+        # Rerender the video on fragment reruns
+        if config.stream_url == 0:
+            st.camera_input("Camera capture")
         else:
-            st.success("Video processing complete!")
+            st.video(config.stream_url, autoplay=True)
+
+    # Drain event_queue into session state
+    if "event_queue" in st.session_state and "dispatched_events" in st.session_state:
+        eq = st.session_state.event_queue
+        while not eq.empty():
+            try:
+                st.session_state.dispatched_events.append(eq.get_nowait())
+            except Exception:
+                break
+
+    # Status updates - rendered fresh each fragment rerun
+    if not st.session_state.get("processing_complete", False):
+        frame_count = 0
+        if "source" in st.session_state:
+            frame_count = st.session_state.source.frame_count
+        st.info(f"Processing video stream... Frame: {frame_count}")
+        if error := st.session_state.get("processing_error"):
+            st.error(f"Processing error: {error}")
+    else:
+        st.success("Video processing complete!")
+
+    # Show dispatched events
+    events = st.session_state.get("dispatched_events", [])
+    if events:
+        st.markdown("**Agent Events**")
+        for evt in events:
+            st.info(
+                f"Event dispatched at {evt['timestamp']} | "
+                f"Image: `{evt['s3_key']}`"
+            )
 
 
 def header():
@@ -162,8 +172,8 @@ def header():
     """
     # --- Set up the page ---
     st.set_page_config(
-        page_title="Bedrock Video Monitoring Agent & Chatbot",
-        page_icon=":video_camera:",
+        page_title="Video Monitoring Agent",
+        page_icon=":material/videocam:",
         layout="centered",
     )
 
@@ -209,7 +219,7 @@ def show_message():
     """
 
     # --- Start the session when there is user input ---
-    user_input = st.text_input("# **Question:** 👇", "", key="input")
+    user_input = st.text_input("Question", "", key="input")
 
     logger.info(f"user_input: {user_input}")
     # Start a new conversation
@@ -236,9 +246,9 @@ def show_message():
                     response_output["source"], str
                 ):
                     source_title = (
-                        "\n\n **Source**:" + "\n\n" + response_output["source"]
+                        "\n\nSource: " + response_output["source"]
                     )
-                answer = "**Answer**: \n\n" + response_output["answer"]
+                answer = response_output["answer"]
             except Exception as e:
                 answer = f"Error in get_response: {e}. Response: {response_output}"
                 logger.error(answer)

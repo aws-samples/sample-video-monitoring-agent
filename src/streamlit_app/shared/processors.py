@@ -6,7 +6,7 @@
 
 import uuid
 from collections import deque
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 import cv2
@@ -70,11 +70,12 @@ class S3Storage(FrameProcessor):
 
 
 class LambdaProcessor(FrameProcessor):
-    def __init__(self, response_handler, monitoring_instructions):
+    def __init__(self, response_handler, monitoring_instructions, event_queue=None):
         logger.info("LambdaProcessor init")
         self.response_handler = response_handler
         self.monitoring_instructions = monitoring_instructions
         self.session_id = "motion_" + str(uuid.uuid4())
+        self.event_queue = event_queue
 
     def process(self, frame: Frame) -> Frame:
         try:
@@ -94,6 +95,12 @@ class LambdaProcessor(FrameProcessor):
                     "agent_response": response,
                 }
             )
+
+            if self.event_queue is not None:
+                self.event_queue.put({
+                    "s3_key": frame.metadata["s3_key"],
+                    "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC"),
+                })
 
         except Exception as e:
             logger.error(f"Error in Lambda processing: {str(e)}")
