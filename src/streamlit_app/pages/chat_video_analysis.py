@@ -101,9 +101,24 @@ def video_stream_section():
                 while source.running:
                     sleep(0.1)
 
-                # Cleanup when done
+                # Wait for queues to fully drain before stopping each stage.
+                # A queue may appear momentarily empty while a worker is
+                # between get() and put(), so require two consecutive empty
+                # checks separated by a pause.
+                def _drain(q):
+                    while True:
+                        if q.empty():
+                            sleep(0.5)
+                            if q.empty():
+                                return
+                        sleep(0.1)
+
+                _drain(source.output)
                 source.stop()
+
+                _drain(processor.output)
                 processor.stop()
+
                 sink.stop()
                 st.session_state.processing_complete = True
             except Exception as e:
