@@ -52,9 +52,10 @@ class VideoStreamSource:
         self._video_source = video_source
         self._output = ctx.JoinableQueue(maxsize=queue_size)
         self._running = ctx.Value("b", False)
+        self._frame_count = ctx.Value("i", 0)
         self._producer: ctx.Process = ctx.Process(
             target=self._capture_frames,
-            args=(self._video_source, self._output, self._running),
+            args=(self._video_source, self._output, self._running, self._frame_count),
             daemon=True,
         )
 
@@ -89,6 +90,10 @@ class VideoStreamSource:
     def running(self):
         return self._running.value
 
+    @property
+    def frame_count(self):
+        return self._frame_count.value
+
     @staticmethod
     def get_frame(stream: cv2.VideoCapture):
         # https://docs.opencv.org/4.10.0/d4/d15/group__videoio__flags__base.html#gaeb8dd9c89c10a5c63c139bf7c4f5704d
@@ -102,7 +107,7 @@ class VideoStreamSource:
         return success, Frame(frame, timestamp, index, fps)
 
     @staticmethod
-    def _capture_frames(video_source, frame_queue, running):
+    def _capture_frames(video_source, frame_queue, running, frame_count):
         # https://docs.opencv.org/4.10.0/d8/dfe/classcv_1_1VideoCapture.html
         stream = cv2.VideoCapture(video_source)
 
@@ -112,6 +117,7 @@ class VideoStreamSource:
                 if not success:
                     running.value = False
                     break
+                frame_count.value = int(frame.index)
                 frame_queue.put(frame)
             else:
                 sleep(0.1)
