@@ -44,7 +44,7 @@ def handle_analyze_grid(
     monitoring_instructions: Annotated[
         str,
         Query(
-            description="Additional monitoring instructions provided with the request. If none avilalbe, provide 'None'."
+            description="Additional monitoring instructions provided with the request. If none available, provide 'None'."
         ),
     ],
 ) -> dict:
@@ -115,7 +115,7 @@ def handle_vehicle_lookup(
     return process_vehicle_lookup(app.current_event["parameters"])
 
 
-@logger.inject_lambda_context(log_event=True)
+@logger.inject_lambda_context(log_event=False)
 @tracer.capture_lambda_handler
 def get_response(event: dict, context: LambdaContext):
     try:

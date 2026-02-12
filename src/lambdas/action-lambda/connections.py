@@ -67,7 +67,6 @@ class Connections:
             },
         }
         model_kwargs = MODEL_KWARGS_MAPPING[model_name].copy()
-        model_kwargs = MODEL_KWARGS_MAPPING[model_name].copy()
 
         model_kwargs.update(
             {

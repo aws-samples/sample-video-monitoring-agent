@@ -260,7 +260,7 @@ class LambdasConstruct(Construct):
                 iam.PolicyStatement(
                     actions=["glue:GetCrawler", "glue:StartCrawler"],
                     resources=[
-                        f"arn:aws:glue:{Aws.REGION}::crawler/{glue_crawler.name}"
+                        f"arn:aws:glue:{Aws.REGION}:{Aws.ACCOUNT_ID}:crawler/{glue_crawler.name}"
                     ],
                     effect=iam.Effect.ALLOW,
                 )

@@ -5,6 +5,7 @@
 # Customer and either Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 
 import multiprocessing
+import os
 from datetime import datetime
 from datetime import timedelta
 from time import sleep
@@ -28,6 +29,7 @@ logger = Connections.logger
 
 TARGET_S3_BUCKET = Connections.stack_outputs["AssetsBucket"]
 S3_PREFIX = Connections.s3_prefix
+_icons = os.path.join(os.path.dirname(__file__), "..", "..", "..", "assets", "icons")
 
 
 @st.fragment
@@ -99,9 +101,24 @@ def video_stream_section():
                 while source.running:
                     sleep(0.1)
 
-                # Cleanup when done
+                # Wait for queues to fully drain before stopping each stage.
+                # A queue may appear momentarily empty while a worker is
+                # between get() and put(), so require two consecutive empty
+                # checks separated by a pause.
+                def _drain(q):
+                    while True:
+                        if q.empty():
+                            sleep(0.5)
+                            if q.empty():
+                                return
+                        sleep(0.1)
+
+                _drain(source.output)
                 source.stop()
+
+                _drain(processor.output)
                 processor.stop()
+
                 sink.stop()
                 st.session_state.processing_complete = True
             except Exception as e:
@@ -157,7 +174,7 @@ def header():
 
     with col1:
         st.image(
-            "../../assets/icons/camera.jpg",
+            os.path.join(_icons, "camera.jpg"),
             width=150,
         )
 
@@ -233,13 +250,13 @@ def show_message():
         for i in range(len(st.session_state["answers"]) - 1, -1, -1):
             with st.chat_message(
                 name="human",
-                avatar="../../assets/icons/avatar.png",
+                avatar=os.path.join(_icons, "avatar.png"),
             ):
                 st.markdown(st.session_state["questions"][i])
 
             with st.chat_message(
                 name="ai",
-                avatar="../../assets/icons/bot.png",
+                avatar=os.path.join(_icons, "bot.png"),
             ):
                 st.markdown(st.session_state["answers"][i])
 

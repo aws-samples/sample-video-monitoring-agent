@@ -15,7 +15,7 @@ logger = Connections.logger
 
 def invoke_bedrock_model(
     prompt: Dict[str, Any],
-    model_id: str = "anthropic.claude-3-sonnet-20240229-v1:0",
+    model_id: str = "us.anthropic.claude-3-sonnet-20240229-v1:0",
     max_tokens: int = 1000,
     temperature: float = 0.5,
 ) -> str:
@@ -32,7 +32,7 @@ def invoke_bedrock_model(
         str: Model's response text
     """
     try:
-        logger.info(f"Prompt for Bedrock: {prompt}")
+        logger.info(f"Invoking Bedrock model: {model_id}, max_tokens={max_tokens}")
 
         response = Connections.bedrock_client.invoke_model(
             modelId=model_id,
@@ -42,7 +42,7 @@ def invoke_bedrock_model(
         )
 
         response_body = json.loads(response.get("body").read())
-        logger.info(f"Bedrock response: {response_body}")
+        logger.info(f"Bedrock response received, usage: {response_body.get('usage', 'N/A')}")
 
         analysis = response_body["content"][0]["text"]
         logger.info(f"Bedrock analysis: {analysis}")
